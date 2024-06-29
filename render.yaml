@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: dashboard-ventas
+    env: python
+    buildCommand: ""
+    startCommand: "python app.py"
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://fashionstore_postgresql_db_user:5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl@dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com:5432/fashionstore_postgresql_db

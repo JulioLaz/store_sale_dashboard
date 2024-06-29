@@ -5,16 +5,30 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import json
+import os
 from sqlalchemy import create_engine
 
 
+
+# def extraer_datos():
+#     DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
+#     DB_NAME = 'fashionstore_postgresql_db'
+#     DB_USER = 'fashionstore_postgresql_db_user'
+#     DB_PASS = '5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl'
+#     DB_PORT = '5432'
+#     DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+#     try:
+#         engine = create_engine(DATABASE_URL)
+#         query_all = "SELECT * FROM ventas"
+#         df_all = pd.read_sql(query_all, engine)
+#         engine.dispose()
+#         return df_all
+#     except Exception as e:
+#         print(f"Error al conectar o extraer los datos: {str(e)}")
+#         return None
+
 def extraer_datos():
-    DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
-    DB_NAME = 'fashionstore_postgresql_db'
-    DB_USER = 'fashionstore_postgresql_db_user'
-    DB_PASS = '5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl'
-    DB_PORT = '5432'
-    DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    DATABASE_URL = os.getenv('DATABASE_URL')
     try:
         engine = create_engine(DATABASE_URL)
         query_all = "SELECT * FROM ventas"
@@ -24,10 +38,9 @@ def extraer_datos():
     except Exception as e:
         print(f"Error al conectar o extraer los datos: {str(e)}")
         return None
+
+
 df = extraer_datos()
-
-# df = pd.read_csv('data.csv')
-
 
 numeric_columns = ['total', 'cantidad', 'valor_unitario', 'valor_total', 'costo_envio', 'ganancia_neta', 'precio']
 for col in numeric_columns:
@@ -40,7 +53,6 @@ with open('brazil-states.geojson', 'r', encoding='utf-8') as f: geojson_br = jso
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 color_palette = px.colors.qualitative.Pastel # Definir una paleta de colores personalizada
-
 
 app = dash.Dash(__name__)
 server = app.server
@@ -146,7 +158,6 @@ tiltes_format = {'text': 'Ventas por Región',
      Input('date-range', 'end_date')]
 )
 
-
 def render_tab_content(active_tab, selected_regions, selected_marcas, start_date, end_date):
     filtered_df = df
     if selected_regions and 'ALL' not in selected_regions:
@@ -177,16 +188,13 @@ def render_tab_content(active_tab, selected_regions, selected_marcas, start_date
         fig4 = px.sunburst(filtered_df, path=['name_region', 'marca', 'producto'],
                            values='total', title='Jerarquía de Ventas por Región, Marca y Producto')
         fig4.update_layout(title=tiltes_format,height=1000)      
-      #   fig4.update_layout(height=900)  # Ajusta el valor de height según sea necesario
         fig4 = update_figure_layout(fig4)
 
         return dbc.Row([
             dbc.Col(dcc.Graph(figure=fig1), width=6),
             dbc.Col(dcc.Graph(figure=fig2), width=6),
-            # html.Div(id='tab-content', className='mt-4'),
             html.Hr(),
             dbc.Col(dcc.Graph(figure=fig3), width=12),
-            # html.Div(id='tab-content', className='mt-4'),
             html.Hr(),
             dbc.Col(dcc.Graph(figure=fig4), width=12),
         ])
@@ -209,9 +217,6 @@ def render_tab_content(active_tab, selected_regions, selected_marcas, start_date
         ])
    
     elif active_tab == 'tab-3':
-      #   city_colors = px.colors.qualitative.Plotly[:len(filtered_df['ciudad'].unique())]
-      #   city_color_map = {city: color for city, color in zip(filtered_df['ciudad'].unique(), city_colors)}
-
         fig1 = px.choropleth(filtered_df.groupby('abbrev_state')['total'].sum().reset_index(),
                              geojson=geojson_br, locations='abbrev_state',
                              color='total', scope="south america",
@@ -342,7 +347,6 @@ def render_tab_content(active_tab, selected_regions, selected_marcas, start_date
             dbc.Col(dcc.Graph(figure=fig2), width=6),
             dbc.Col(dcc.Graph(figure=fig3), width=6),
         ])
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
