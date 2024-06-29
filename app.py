@@ -7,8 +7,7 @@ import plotly.graph_objects as go
 import json
 from sqlalchemy import create_engine
 
-app = dash.Dash(__name__)
-server = app.server
+
 def extraer_datos():
     DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
     DB_NAME = 'fashionstore_postgresql_db'
@@ -42,6 +41,9 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 color_palette = px.colors.qualitative.Pastel # Definir una paleta de colores personalizada
 
+
+app = dash.Dash(__name__)
+server = app.server
 def update_figure_layout(fig):
     fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
