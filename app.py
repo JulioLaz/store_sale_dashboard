@@ -9,43 +9,6 @@ import json
 import os
 from sqlalchemy import create_engine
 
-
-
-# def extraer_datos():
-# DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
-# DB_NAME = 'fashionstore_postgresql_db'
-# DB_USER = 'fashionstore_postgresql_db_user'
-# DB_PASS = '5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl'
-# DB_PORT = '5432'
-# DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-#     try:
-#         engine = create_engine(DATABASE_URL)
-#         query_all = "SELECT * FROM ventas"
-#         df_all = pd.read_sql(query_all, engine)
-#         engine.dispose()
-#         return df_all
-#     except Exception as e:
-#         print(f"Error al conectar o extraer los datos: {str(e)}")
-#         return None
-# print('-'*100)
-# print(DATABASE_URL)
-# print('-'*100)
-
-
-# def extraer_datos():
-#    #  DATABASE_URL = os.getenv('DATABASE_URL')
-#     try:
-#         engine = create_engine(DATABASE_URL)
-#         query_all = "SELECT * FROM ventas"
-#         df_all = pd.read_sql(query_all, engine)
-#         engine.dispose()
-#         return df_all
-#     except Exception as e:
-#         print(f"Error al conectar o extraer los datos: {str(e)}")
-#         return None
-############################################################
-
-# Cargar las variables de entorno
 load_dotenv()
 
 def extraer_datos():
@@ -60,7 +23,6 @@ def extraer_datos():
         print(f"Error al conectar o extraer los datos: {str(e)}")
         return None
 
-############################################################
 df = extraer_datos()
 
 numeric_columns = ['total', 'cantidad', 'valor_unitario', 'valor_total', 'costo_envio', 'ganancia_neta', 'precio']
@@ -70,7 +32,6 @@ df['fecha_compra'] = pd.to_datetime(df['fecha_compra'], errors='coerce')
 
 with open('brazil-states.geojson', 'r', encoding='utf-8') as f: geojson_br = json.load(f)
 
-# app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 color_palette = px.colors.qualitative.Pastel # Definir una paleta de colores personalizada
