@@ -36,7 +36,7 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 color_palette = px.colors.qualitative.Pastel # Definir una paleta de colores personalizada
 
-app = dash.Dash(__name__)
+# app = dash.Dash(__name__)
 server = app.server
 def update_figure_layout(fig):
     fig.update_layout(
