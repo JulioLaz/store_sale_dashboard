@@ -11,12 +11,12 @@ from sqlalchemy import create_engine
 
 
 # def extraer_datos():
-#     DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
-#     DB_NAME = 'fashionstore_postgresql_db'
-#     DB_USER = 'fashionstore_postgresql_db_user'
-#     DB_PASS = '5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl'
-#     DB_PORT = '5432'
-#     DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+DB_HOST = 'dpg-cpvbhptds78s73b10pfg-a.oregon-postgres.render.com'  # Usa el nombre de host completo
+DB_NAME = 'fashionstore_postgresql_db'
+DB_USER = 'fashionstore_postgresql_db_user'
+DB_PASS = '5Ae1BOOzxZBD9dRtW27tnATEAV4uiHYl'
+DB_PORT = '5432'
+DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 #     try:
 #         engine = create_engine(DATABASE_URL)
 #         query_all = "SELECT * FROM ventas"
@@ -28,7 +28,7 @@ from sqlalchemy import create_engine
 #         return None
 
 def extraer_datos():
-    DATABASE_URL = os.getenv('DATABASE_URL')
+   #  DATABASE_URL = os.getenv('DATABASE_URL')
     try:
         engine = create_engine(DATABASE_URL)
         query_all = "SELECT * FROM ventas"
